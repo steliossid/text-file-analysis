@@ -1,6 +1,6 @@
 # Module that is responsible to generate text randomly based on the successor of a given word
 
-# import time
+import time
 import sys
 import re
 from random import choices
@@ -31,8 +31,9 @@ def generate_random_sentence(doc):
             prog = re.compile(rx)
             c2 = Counter(prog.findall(doc))
             most_common_successors = dict(c2.most_common())
-            for key, value in most_common_successors.items():
-                most_common_successors[key] = value / c[cur_word]
+            # for key, value in most_common_successors.items():
+            #    most_common_successors[key] = value / c[cur_word]
+            most_common_successors = {key: value / c[cur_word] for key, value in most_common_successors.items()}
             selected_successor = choices(population=list(most_common_successors.keys()),
                                          weights=list(most_common_successors.values()), k=1)
             cur_word = selected_successor[0]
@@ -43,10 +44,7 @@ def generate_random_sentence(doc):
 
 
 if __name__ == '__main__':
-    # 2500 words takes 39.88 sec
-    # 500 words takes 11.58 sec
-
     # start_time = time.time()
     main()
-    # passed_time = time.time() - start_time
-    # print(passed_time)
+    # passed_time = round(time.time() - start_time)
+    # print(f"{passed_time} seconds")
